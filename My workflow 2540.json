@@ -1,0 +1,272 @@
+{
+  "name": "My workflow 2540",
+  "nodes": [
+    {
+      "parameters": {
+        "httpRequestMethod": "POST",
+        "graphApiVersion": "v23.0",
+        "node": "={{ $('Get Page ID').item.json.id }}",
+        "edge": "photos",
+        "sendBinaryData": true,
+        "binaryPropertyName": "data",
+        "options": {
+          "queryParameters": {
+            "parameter": [
+              {
+                "name": "caption",
+                "value": "={{ $('Lấy 1 tiêu đề Ngẫu Nhiên').item.json.randomTitle }}"
+              },
+              {
+                "name": "source",
+                "value": "={{$binary.data}}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        0
+      ],
+      "id": "d288be76-f647-4acb-a509-fa08858f1bd0",
+      "name": "Post to Facebook",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "IEClSKIRZHVQZEDp",
+          "name": "Facebook Graph account 8"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "graphApiVersion": "v23.0",
+        "node": "me",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.facebookGraphApi",
+      "typeVersion": 1,
+      "position": [
+        256,
+        0
+      ],
+      "id": "c3046a9f-ac9e-4913-91c6-99923fc09908",
+      "name": "Get Page ID",
+      "credentials": {
+        "facebookGraphApi": {
+          "id": "IEClSKIRZHVQZEDp",
+          "name": "Facebook Graph account 8"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "https://drive.google.com/file/d/1mVg5JRclR9H880iFuxVqwE7aIhXP0cQi/view?usp=drive_link",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1248,
+        0
+      ],
+      "id": "c1c33daf-1458-48e3-9bf3-bfca037c2ab0",
+      "name": "Download file",
+      "credentials": {
+        "googleApi": {
+          "id": "6gtsdykKxQldCTE2",
+          "name": "Google Sheets account 25"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "cee5c9fb-1141-4d8d-9f03-28c2c06c0ae2",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cedf1dc0-d604-453f-ae26-fd7cc9873c18",
+              "name": "randomTitle",
+              "value": "={{ $json.data[0]['title' + (Math.floor(Math.random() * Object.keys($json.data[0]).length) + 1)] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        960,
+        0
+      ],
+      "id": "bb6508e0-ed29-4ee6-b247-fac6570c70c0",
+      "name": "Lấy 1 tiêu đề Ngẫu Nhiên"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c3b9d423-1b67-43a4-ad48-70a97f3b083d",
+              "name": "title1",
+              "value": "Xu Hướng Mới 2025 ",
+              "type": "string"
+            },
+            {
+              "id": "e0d27355-0aa8-49fa-aa14-412ee11c81da",
+              "name": "title2",
+              "value": "Bí Quyết Thành Công",
+              "type": "string"
+            },
+            {
+              "id": "ac23f506-e150-4c8c-b44d-e32f9722bd2d",
+              "name": "title3",
+              "value": "Strategy",
+              "type": "string"
+            },
+            {
+              "id": "a5e68f63-fe53-4b63-8310-1a3dbbaa3808",
+              "name": "title4",
+              "value": "Chiến Lược Hiệu Quả",
+              "type": "string"
+            },
+            {
+              "id": "542307ea-6c94-42f0-b11c-373ae02e74ef",
+              "name": "title5",
+              "value": "Cập Nhật Công Nghệ",
+              "type": "string"
+            },
+            {
+              "id": "84940890-ad70-4940-9233-fd1685dcc255",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        0
+      ],
+      "id": "3017ad8b-b3c3-423d-98b7-acdae5866271",
+      "name": "Create Title"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        672,
+        0
+      ],
+      "id": "a94c2366-eeab-48a1-9392-ebe428363d5c",
+      "name": "Aggregate"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get Page ID": {
+      "main": [
+        [
+          {
+            "node": "Create Title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Post to Facebook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get Page ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lấy 1 tiêu đề Ngẫu Nhiên": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Title": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Lấy 1 tiêu đề Ngẫu Nhiên",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "070ea2ef-8344-4c22-acd3-75346ddb3c6d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "94a383c02457267bcc44878635a0fa02b7d3206c5479bfc8890faa812e2bbd97"
+  },
+  "id": "HGe6Lim0eKmi3mTW",
+  "tags": []
+}
